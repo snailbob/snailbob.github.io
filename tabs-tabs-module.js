@@ -125,7 +125,21 @@ var routes = [{
                 children: [{
                         path: '',
                         loadChildren: '../tab0/tab0.module#Tab0PageModule'
-                    }]
+                    },
+                    {
+                        path: 'dashboard',
+                        children: [
+                            {
+                                path: 'support',
+                                loadChildren: '../dashboard/support/support.module#SupportPageModule'
+                            },
+                            {
+                                path: 'faq',
+                                loadChildren: '../dashboard/faq/faq.module#FaqPageModule'
+                            },
+                        ],
+                    }
+                ]
             },
             {
                 path: 'tab1',
@@ -137,7 +151,7 @@ var routes = [{
                         path: 'case',
                         children: [
                             {
-                                path: 'all',
+                                path: 'silent',
                                 loadChildren: '../cases/all/all.module#AllPageModule'
                             },
                             {

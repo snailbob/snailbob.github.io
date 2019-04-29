@@ -857,6 +857,14 @@ var map = {
 		"./src/app/cases/pending/pending.module.ts",
 		"cases-pending-pending-module"
 	],
+	"../dashboard/faq/faq.module": [
+		"./src/app/dashboard/faq/faq.module.ts",
+		"dashboard-faq-faq-module"
+	],
+	"../dashboard/support/support.module": [
+		"./src/app/dashboard/support/support.module.ts",
+		"dashboard-support-support-module"
+	],
 	"../messages/conversation/conversation.module": [
 		"./src/app/messages/conversation/conversation.module.ts",
 		"messages-conversation-conversation-module"
@@ -900,6 +908,14 @@ var map = {
 	"./cases/modal/remarks/remarks.module": [
 		"./src/app/cases/modal/remarks/remarks.module.ts",
 		"cases-modal-remarks-remarks-module"
+	],
+	"./dashboard/faq/faq.module": [
+		"./src/app/dashboard/faq/faq.module.ts",
+		"dashboard-faq-faq-module"
+	],
+	"./dashboard/support/support.module": [
+		"./src/app/dashboard/support/support.module.ts",
+		"dashboard-support-support-module"
 	],
 	"./login/login.module": [
 		"./src/app/login/login.module.ts",
@@ -972,6 +988,8 @@ var routes = [
     { path: 'password', loadChildren: './password/password.module#PasswordPageModule' },
     { path: 'remarks', loadChildren: './cases/modal/remarks/remarks.module#RemarksPageModule' },
     { path: 'tab0', loadChildren: './tab0/tab0.module#Tab0PageModule' },
+    { path: 'support', loadChildren: './dashboard/support/support.module#SupportPageModule' },
+    { path: 'faq', loadChildren: './dashboard/faq/faq.module#FaqPageModule' },
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -998,7 +1016,7 @@ var AppRoutingModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-app>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n"
+module.exports = "<ion-app>\n    <ion-menu side=\"end\" type=\"push\">\n        <ion-header>\n          <ion-toolbar color=\"primary\">\n            <ion-title>Menu</ion-title>\n          </ion-toolbar>\n        </ion-header>\n        <ion-content>\n          <ion-list (click)=\"closeEnd()\">\n            <ion-item routerLink=\"/tabs/tab0/dashboard/faq\">Help Desk [FAQ]</ion-item>\n            <ion-item routerLink=\"/tabs/tab0/dashboard/support\">Report an Issue</ion-item>\n          </ion-list>\n        </ion-content>\n      </ion-menu>\n  <ion-router-outlet main></ion-router-outlet>\n</ion-app>\n"
 
 /***/ }),
 
@@ -1022,11 +1040,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var AppComponent = /** @class */ (function () {
-    function AppComponent(platform, splashScreen, statusBar) {
+    function AppComponent(platform, splashScreen, statusBar, menu) {
         this.platform = platform;
         this.splashScreen = splashScreen;
         this.statusBar = statusBar;
+        this.menu = menu;
         this.initializeApp();
     }
     AppComponent.prototype.initializeApp = function () {
@@ -1036,6 +1056,14 @@ var AppComponent = /** @class */ (function () {
             _this.splashScreen.hide();
         });
     };
+    AppComponent.prototype.openFirst = function () {
+        this.menu.enable(true, 'first');
+        this.menu.open('first');
+    };
+    AppComponent.prototype.closeEnd = function () {
+        // this.menu.open('end');
+        this.menu.close();
+    };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-root',
@@ -1043,7 +1071,8 @@ var AppComponent = /** @class */ (function () {
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"],
             _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"],
-            _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"]])
+            _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["MenuController"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -1166,7 +1195,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Work\Paul\Cura\src\main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/eatsleepcode.macmini/Bob/Work/Paul/CuraCallApp/src/main.ts */"./src/main.ts");
 
 
 /***/ })
