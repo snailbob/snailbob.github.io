@@ -2873,8 +2873,10 @@ __webpack_require__.r(__webpack_exports__);
 var environment = {
     env: 'test',
     production: false,
-    baseUrl: 'http://curacall.azure/api',
-    url: 'http://curacall.azure',
+    // baseUrl: 'http://curacall.azure/api',
+    // url: 'http://curacall.azure',
+    baseUrl: 'https://curacallv2.azurewebsites.net/api',
+    url: 'https://curacallv2.azurewebsites.net',
 };
 /*
  * For easier debugging in development mode, you can import the following file

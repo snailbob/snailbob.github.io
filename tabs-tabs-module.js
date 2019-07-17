@@ -299,7 +299,7 @@ var routes = [{
     },
     {
         path: '',
-        redirectTo: '/tabs/tab4/settings/notification',
+        redirectTo: '/login',
         pathMatch: 'full'
     },
 ];
