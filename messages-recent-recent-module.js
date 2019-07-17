@@ -58,7 +58,7 @@ var RecentPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-back-button></ion-back-button>\n    </ion-buttons>\n    <ion-title>\n      <img alt=\"logo\" height=\"40\" src=\"assets/logo.png\">\n    </ion-title>\n  </ion-toolbar>\n\n  <ion-toolbar>\n    <ion-input placeholder=\"Search contact here\"></ion-input>\n    <ion-buttons slot=\"end\">\n      <ion-icon name=\"search\"></ion-icon>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n<ion-content>\n  <ion-list>\n    <ion-list-header>\n      <ion-label>Recent</ion-label>\n    </ion-list-header>\n    <ion-item routerLink=\"/tabs/tab2/messages/conversation\">\n      <ion-icon name=\"time\" slot=\"start\"></ion-icon>\n      <ion-label>Paul Lieberman</ion-label>\n    </ion-item>\n    <ion-item routerLink=\"/tabs/tab2/messages/conversation\">\n      <ion-icon name=\"time\" slot=\"start\"></ion-icon>\n      <ion-label>Michael Basalan</ion-label>\n    </ion-item>\n    <ion-item routerLink=\"/tabs/tab2/messages/conversation\">\n      <ion-icon name=\"time\" slot=\"start\"></ion-icon>\n      <ion-label>Post Malone</ion-label>\n    </ion-item>\n    <ion-item routerLink=\"/tabs/tab2/messages/conversation\">\n      <ion-icon name=\"time\" slot=\"start\"></ion-icon>\n      <ion-label>Bob Marley</ion-label>\n    </ion-item>\n    <ion-item routerLink=\"/tabs/tab2/messages/conversation\">\n      <ion-icon name=\"time\" slot=\"start\"></ion-icon>\n      <ion-label>Cathy Cat</ion-label>\n    </ion-item>\n  </ion-list>\n</ion-content>"
+module.exports = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-title>\r\n      <img alt=\"logo\" height=\"40\" src=\"assets/logo.png\">\r\n    </ion-title>\r\n    <ion-buttons slot=\"end\" *ngIf=\"selectedCount\">\r\n      <ion-button color=\"primary\" (click)=\"initiateMessage()\">\r\n        <ion-icon name=\"paper-plane\"></ion-icon>\r\n      </ion-button>\r\n    </ion-buttons>\r\n  </ion-toolbar>\r\n\r\n  <ion-toolbar>\r\n    <ion-searchbar [(ngModel)]=\"searchText\" (ngModelChange)=\"searchContacts()\" placeholder=\"Search contact\"></ion-searchbar>\r\n  </ion-toolbar>\r\n</ion-header>\r\n<ion-content>\r\n  <ion-list *ngIf=\"!searchText\">\r\n    <ion-list-header>\r\n      <ion-label>Recent</ion-label>\r\n    </ion-list-header>\r\n    <ion-item *ngFor=\"let contact of recentContacts\" routerLink=\"/tabs/tab2/messages/conversation/{{contact.room_id}}\">\r\n      <ion-avatar slot=\"start\">\r\n        <img [src]=\"contact.avatar\">\r\n      </ion-avatar>\r\n      <ion-label>{{contact.full_name}}</ion-label>\r\n    </ion-item>\r\n  </ion-list>\r\n\r\n  <ion-list *ngIf=\"contacts.length && !isLoading\">\r\n    <ion-list-header>\r\n      <ion-label>Contacts</ion-label>\r\n    </ion-list-header>\r\n    <ion-item *ngFor=\"let contact of contacts\">\r\n      <ion-avatar slot=\"start\">\r\n        <img [src]=\"contact.avatar\">\r\n      </ion-avatar>\r\n      <ion-label>{{contact.full_name}}</ion-label>\r\n      <ion-checkbox slot=\"end\" (ngModelChange)=\"onSelect(contact)\" [(ngModel)]=\"contact.isChecked\"></ion-checkbox>\r\n    </ion-item>\r\n  </ion-list>\r\n  <div padding class=\"ion-text-center\" *ngIf=\"isLoading\">\r\n    <ion-spinner></ion-spinner>\r\n  </div>\r\n  <p padding class=\"ion-text-center\" *ngIf=\"!isLoading && !contacts.length\">\r\n    no contacts\r\n  </p>\r\n</ion-content>"
 
 /***/ }),
 
@@ -85,12 +85,99 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RecentPage", function() { return RecentPage; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var _services_message_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/message.service */ "./src/app/services/message.service.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_services_user_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/user.service */ "./src/app/services/user.service.ts");
+/* harmony import */ var src_app_services_common_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/services/common.service */ "./src/app/services/common.service.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
+
+
+
+
+
+
+
 
 
 var RecentPage = /** @class */ (function () {
-    function RecentPage() {
+    function RecentPage(router, route, userService, actionSheetController, alertController, commonService, toastController, messageService) {
+        var _this = this;
+        this.router = router;
+        this.route = route;
+        this.userService = userService;
+        this.actionSheetController = actionSheetController;
+        this.alertController = alertController;
+        this.commonService = commonService;
+        this.toastController = toastController;
+        this.messageService = messageService;
+        this.recentContacts = [];
+        this.contacts = [];
+        this.userInfo = {};
+        this.selectedCount = 0;
+        this.searchText = '';
+        this.isLoading = false;
+        this.modelChanged = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
+        this.modelChanged
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["debounceTime"])(300), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["distinctUntilChanged"])())
+            .subscribe(function (model) { return _this.searchText = model; });
     }
     RecentPage.prototype.ngOnInit = function () {
+        this.getRecentContacts();
+        this.searchContacts();
+        this.userInfo = this.userService.getUserInfo();
+    };
+    RecentPage.prototype.getRecentContacts = function () {
+        var _this = this;
+        this.messageService.getRecentContacts({})
+            .subscribe(function (res) {
+            console.log(res);
+            _this.recentContacts = res.contacts;
+        });
+    };
+    RecentPage.prototype.onSelect = function (contact) {
+        this.selectedCount = !contact.isChecked ? this.selectedCount + 1 : this.selectedCount - 1;
+        console.log(contact);
+    };
+    RecentPage.prototype.initiateMessage = function () {
+        var _this = this;
+        var selected = this.contacts.filter(function (item) { return item.isChecked; });
+        if (selected.length === 1) {
+            this.router.navigate(["/tabs/tab2/messages/conversation/" + selected[0].room_id]);
+        }
+        else {
+            this.commonService.presentLoading();
+            var roomName_1 = this.userInfo.id + '-';
+            selected.map(function (item, index) {
+                roomName_1 += ((index + 1 === selected.length)) ? item.id : item.id + '-';
+            });
+            var param = {
+                name: roomName_1,
+                participants_no: selected.length,
+                status: 'active',
+                user_id: this.userInfo.id
+            };
+            this.messageService.createRoom(param)
+                .subscribe(function (room) {
+                _this.commonService.loadingBox.dismiss();
+                _this.router.navigate(["/tabs/tab2/messages/conversation/" + room.id]);
+            });
+            console.log(roomName_1);
+        }
+    };
+    RecentPage.prototype.searchContacts = function () {
+        var _this = this;
+        this.isLoading = true;
+        this.selectedCount = 0;
+        console.log(this.searchText);
+        this.userService.getUsers({ searchText: this.searchText })
+            .subscribe(function (res) {
+            _this.isLoading = false;
+            console.log(res);
+            _this.contacts = res;
+        });
     };
     RecentPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -98,7 +185,14 @@ var RecentPage = /** @class */ (function () {
             template: __webpack_require__(/*! ./recent.page.html */ "./src/app/messages/recent/recent.page.html"),
             styles: [__webpack_require__(/*! ./recent.page.scss */ "./src/app/messages/recent/recent.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"],
+            src_app_services_user_service__WEBPACK_IMPORTED_MODULE_6__["UserService"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["ActionSheetController"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"],
+            src_app_services_common_service__WEBPACK_IMPORTED_MODULE_7__["CommonService"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["ToastController"],
+            _services_message_service__WEBPACK_IMPORTED_MODULE_3__["MessageService"]])
     ], RecentPage);
     return RecentPage;
 }());

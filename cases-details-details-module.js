@@ -61,7 +61,7 @@ var DetailsPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-buttons slot=\"start\">\n      <ion-back-button></ion-back-button>\n    </ion-buttons>\n    <ion-buttons slot=\"end\">\n      <ion-button color=\"primary\" *ngIf=\"caseStatus === 'pending' || isAccepted && !isClosed\"\n        (click)=\"presentActionSheet()\">\n        <ion-icon name=\"chatbubbles\"></ion-icon>\n      </ion-button>\n      <ion-button color=\"primary\" *ngIf=\"caseStatus === 'active' && !isAccepted\" (click)=\"acceptCase()\">\n        <ion-icon name=\"add-circle\"></ion-icon> Accept\n      </ion-button>\n\n    </ion-buttons>\n    <ion-title>\n      <img alt=\"logo\" height=\"40\" src=\"assets/logo.png\">\n    </ion-title>\n  </ion-toolbar>\n  <ion-toolbar *ngIf=\"!isCaseActioned && isToAssignAction && !action.show\">\n    <ion-buttons slot=\"start\">\n      <ion-button color=\"primary\" fill=\"solid\"\n        (click)=\"presentAssignConfirm('Are sure you want to assign this case to your self?', true)\">\n        <ion-icon name=\"person\"></ion-icon> Assign to me\n      </ion-button>\n\n    </ion-buttons>\n    <!-- <ion-buttons slot=\"end\">\n      <ion-button color=\"warning\" fill=\"solid\" (click)=\"declineAction()\">\n        <ion-icon name=\"close-circle\"></ion-icon> Decline\n      </ion-button>\n    </ion-buttons> -->\n  </ion-toolbar>\n\n  <ion-toolbar *ngIf=\"action.show\">\n    <ion-buttons slot=\"start\">\n      <ion-button color=\"primary\" fill=\"solid\" (click)=\"doAction()\" [disabled]=\"!action.note\">\n        {{action.btnText}}\n      </ion-button>\n\n    </ion-buttons>\n    <ion-buttons slot=\"end\">\n      <ion-button color=\"warning\" fill=\"solid\" (click)=\"cancelAction()\">\n        Cancel\n      </ion-button>\n    </ion-buttons>\n  </ion-toolbar>\n  <ion-toolbar *ngIf=\"action.show\">\n    <textarea name=\"remarks\" class=\"input-textarea\" [(ngModel)]=\"action.note\"\n      [placeholder]=\"action.type === 'note' ? 'Add your note here..' : 'Add your remarks here..'\" rows=\"5\"></textarea>\n  </ion-toolbar>\n\n  <ion-toolbar *ngIf=\"action.show && action.type === 'forward'\">\n    <ion-item class=\"input-bordered\" lines=\"none\">\n      <ion-label>Forward to</ion-label>\n      <ionic-selectable [(ngModel)]=\"contact\" [items]=\"contacts\" itemValueField=\"id\" itemTextField=\"name\"\n        [canSearch]=\"true\" [isMultiple]=\"true\" (onChange)=\"contactChange($event)\">\n      </ionic-selectable>\n    </ion-item>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header color=\"medium\">\n      <ion-label>Caller Information</ion-label>\n    </ion-list-header>\n    <ion-item>\n      <ion-label>First name</ion-label>\n      <ion-note slot=\"end\">Michael</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Last name</ion-label>\n      <ion-note slot=\"end\">Basalan</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Caller type</ion-label>\n      <ion-note slot=\"end\">caregiver</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Type of caregiver</ion-label>\n      <ion-note slot=\"end\">caregiver</ion-note>\n    </ion-item>\n    <ion-item href=\"tel:2342342343442\">\n      <ion-label>Caller telephone</ion-label>\n      <ion-note slot=\"end\">2342342343442</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Is hospital related</ion-label>\n      <ion-note slot=\"end\">No</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Caregiver clock in code</ion-label>\n      <ion-note slot=\"end\">123213</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\">\n      <ion-label>Call Information</ion-label>\n    </ion-list-header>\n    <ion-item>\n      <ion-label>Call type </ion-label>\n      <ion-note slot=\"end\">Office; timesheet</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Timesheet concern</ion-label>\n      <ion-note slot=\"end\">verifying timesheet</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\">\n      <ion-label>Caregiver Information</ion-label>\n    </ion-list-header>\n    <ion-item>\n      <ion-label>Type of caregiver</ion-label>\n      <ion-note slot=\"end\">home health aide</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>First name</ion-label>\n      <ion-note slot=\"end\">Michael</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Last name</ion-label>\n      <ion-note slot=\"end\">Basalan</ion-note>\n    </ion-item>\n    <ion-item href=\"tel:2342342343442\">\n      <ion-label>Telephone number</ion-label>\n      <ion-note slot=\"end\">2342342343442</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Povide start time of shift</ion-label>\n      <ion-note slot=\"end\">No</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Povide end time of shift</ion-label>\n      <ion-note slot=\"end\">123213</ion-note>\n    </ion-item>\n\n\n    <ion-list-header color=\"medium\">\n      <ion-label>Other information</ion-label>\n    </ion-list-header>\n    <ion-item>\n      <ion-label>Call reason</ion-label>\n      <ion-note slot=\"end\">test</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Call language</ion-label>\n      <ion-note slot=\"end\">no</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Number of calls</ion-label>\n      <ion-note slot=\"end\">1st time</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\">\n      <ion-label>Case Created</ion-label>\n    </ion-list-header>\n    <ion-item>\n      <ion-label>Created case date</ion-label>\n      <ion-note slot=\"end\">12/12/2018</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Created case time</ion-label>\n      <ion-note slot=\"end\">10:10PM</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\">\n      <ion-label>Case Read</ion-label>\n    </ion-list-header>\n    <ion-item>\n      <ion-label>Read case date</ion-label>\n      <ion-note slot=\"end\">12/12/2018</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Read case time</ion-label>\n      <ion-note slot=\"end\">10:10PM</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\" *ngIf=\"isForwarded\">\n      <ion-label>Forward Details</ion-label>\n    </ion-list-header>\n    <ion-item *ngIf=\"isForwarded\">\n      <ion-label>Message</ion-label>\n      <ion-note slot=\"end\">{{messages.forwardMessage }}</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isForwarded\">\n      <ion-label>Forwarded to</ion-label>\n      <ion-note slot=\"end\">{{ messages.forwardedTo}}</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isForwarded\">\n      <ion-label>Forwarded date</ion-label>\n      <ion-note slot=\"end\">{{messages.forwardDate | date }}</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isForwarded\">\n      <ion-label>Forwarded time</ion-label>\n      <ion-note slot=\"end\">{{messages.forwardDate | date: 'shortTime' }}</ion-note>\n    </ion-item>\n    \n    <ion-list-header color=\"medium\" *ngIf=\"isAccepted\">\n      <ion-label>Accepted Details</ion-label>\n    </ion-list-header>\n    <ion-item *ngIf=\"isAccepted\">\n      <ion-label>Accepted date</ion-label>\n      <ion-note slot=\"end\">{{messages.forwardDate | date }}</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isAccepted\">\n      <ion-label>Accepted time</ion-label>\n      <ion-note slot=\"end\">{{messages.forwardDate | date: 'shortTime' }}</ion-note>\n    </ion-item>\n    \n\n    <!-- <ion-list-header color=\"medium\">\n      <ion-label>Case Sent</ion-label>\n    </ion-list-header>\n    <ion-item>\n      <ion-label>Sent case date</ion-label>\n      <ion-note slot=\"end\">12/12/2018</ion-note>\n    </ion-item>\n    <ion-item>\n      <ion-label>Sent case time</ion-label>\n      <ion-note slot=\"end\">10:10PM</ion-note>\n    </ion-item> -->\n\n    <ion-list-header color=\"medium\" *ngIf=\"isCaseActioned\">\n      <ion-label>Case forward status</ion-label>\n    </ion-list-header>\n    <ion-item *ngIf=\"isCaseActioned\">\n      <ion-label>Forwarded to</ion-label>\n      <ion-note slot=\"end\">Paul Lieberman</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isCaseActioned\">\n      <ion-label>Respond</ion-label>\n      <ion-note slot=\"end\">{{isAssign ? 'Assigned' : 'Declined'}}</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isCaseActioned\">\n      <ion-label>Respond Date/Time</ion-label>\n      <ion-note slot=\"end\">12/12/2018 10:10PM</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\" *ngIf=\"isClosed\">\n      <ion-label>Closed Details</ion-label>\n    </ion-list-header>\n    <ion-item *ngIf=\"isClosed\">\n      <ion-label>Message</ion-label>\n      <ion-note slot=\"end\">{{messages.closeMessage }}</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isClosed\">\n      <ion-label>Closed by</ion-label>\n      <ion-note slot=\"end\">Paul Lieberman</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"isClosed\">\n      <ion-label>Closed Date/Time</ion-label>\n      <ion-note slot=\"end\">12/12/2018 10:10PM</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\" *ngIf=\"declineNote\">\n      <ion-label>Decline Details</ion-label>\n    </ion-list-header>\n    <ion-item *ngIf=\"declineNote\">\n      <ion-label>Message</ion-label>\n      <ion-note slot=\"end\">{{declineNote}}</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"declineNote\">\n      <ion-label>Declined by</ion-label>\n      <ion-note slot=\"end\">Paul Lieberman</ion-note>\n    </ion-item>\n    <ion-item *ngIf=\"declineNote\">\n      <ion-label>Decline Date/Time</ion-label>\n      <ion-note slot=\"end\">12/12/2018 10:10PM</ion-note>\n    </ion-item>\n\n    <ion-list-header color=\"medium\" *ngIf=\"messages.notes.length\">\n      <ion-label>Case Notes</ion-label>\n    </ion-list-header>\n  </ion-list>\n\n  <ion-card *ngFor=\"let note of messages.notes\">\n    <ion-list lines=\"none\">\n      <ion-item>\n        <ion-label>Note</ion-label>\n        <ion-note slot=\"end\">{{note.message}}</ion-note>\n      </ion-item>\n      <ion-item>\n        <ion-label>Date Added</ion-label>\n        <ion-note slot=\"end\">{{note.date | date: 'MMM d, y, h:mm a' }}</ion-note>\n      </ion-item>\n      <ion-item>\n        <ion-label>Added by</ion-label>\n        <ion-note slot=\"end\">Paul Lieberman</ion-note>\n      </ion-item>\n    </ion-list>\n  </ion-card>\n</ion-content>"
+module.exports = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-buttons slot=\"start\">\r\n      <ion-back-button></ion-back-button>\r\n    </ion-buttons>\r\n    <ion-buttons slot=\"end\">\r\n      <ion-button color=\"primary\" *ngIf=\"(caseStatus === 'pending' || caseStatus === 'closed')\"\r\n        (click)=\"presentActionSheet()\">\r\n        Actions\r\n      </ion-button>\r\n      <ion-button color=\"primary\" *ngIf=\"caseStatus === 'active' && !isAccepted\" (click)=\"acceptCase()\">\r\n        <ion-icon name=\"add-circle\"></ion-icon> Accept\r\n      </ion-button>\r\n\r\n    </ion-buttons>\r\n    <ion-title>\r\n      <img alt=\"logo\" height=\"40\" src=\"assets/logo.png\">\r\n    </ion-title>\r\n  </ion-toolbar>\r\n  <ion-toolbar [color]=\"theCase?.status_color\">\r\n    <ion-buttons slot=\"start\" *ngIf=\"action.show\">\r\n      <ion-button color=\"primary\" fill=\"solid\" (click)=\"doAction()\" [disabled]=\"!action.note\">\r\n        {{action.btnText}}\r\n      </ion-button>\r\n    </ion-buttons>\r\n\r\n    <ion-title>{{theCase?.status_text}}</ion-title>\r\n    <ion-buttons slot=\"end\" *ngIf=\"!isCaseActioned && isToAssignAction && !action.show\">\r\n      <ion-button color=\"light\" fill=\"solid\"\r\n        (click)=\"presentAssignConfirm('Are sure you want to assign this case to your self?', true)\">\r\n        <ion-icon name=\"person\"></ion-icon> Assign to me\r\n      </ion-button>\r\n    </ion-buttons>\r\n    <ion-buttons slot=\"end\" *ngIf=\"action.show\">\r\n      <ion-button color=\"warning\" fill=\"solid\" (click)=\"cancelAction()\">\r\n        Cancel\r\n      </ion-button>\r\n    </ion-buttons>\r\n  </ion-toolbar>\r\n\r\n  <ion-toolbar *ngIf=\"action.show\">\r\n    <textarea name=\"remarks\" class=\"input-textarea\" [(ngModel)]=\"action.note\"\r\n      [placeholder]=\"action.type === 'note' ? 'Add your note here..' : 'Add your remarks here..'\" rows=\"5\"></textarea>\r\n  </ion-toolbar>\r\n\r\n  <ion-toolbar *ngIf=\"action.show && action.type === 'forward'\">\r\n    <ion-item class=\"input-bordered\" lines=\"none\">\r\n      <ion-label>Forward to</ion-label>\r\n      <ionic-selectable [(ngModel)]=\"contact\" [items]=\"contacts\" itemValueField=\"id\" itemTextField=\"full_name\"\r\n        [canSearch]=\"true\" [isMultiple]=\"true\" (onChange)=\"contactChange($event)\">\r\n      </ionic-selectable>\r\n    </ion-item>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n  <ion-list>\r\n    <ion-list-header color=\"medium\">\r\n      <ion-label>Caller Information</ion-label>\r\n    </ion-list-header>\r\n    <ion-item>\r\n      <ion-label>First name</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caller_first_name}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Last name</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caller_last_name}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Caller type</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caller_type}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Type of caregiver</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caregiver_type}}</ion-note>\r\n    </ion-item>\r\n    <ion-item href=\"tel:{{theCase?.caller_telephone_number}}\">\r\n      <ion-label>Caller telephone</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caller_telephone_number}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Is hospital related</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.hospital_related}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Caregiver clock in code</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caregiver_time_and_attendance_pin_code || 'not available'}}</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\">\r\n      <ion-label>Call Information</ion-label>\r\n    </ion-list-header>\r\n    <ion-item>\r\n      <ion-label>Call type </ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.call_type}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Timesheet concern</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.was_timesheet_submitted}}</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\">\r\n      <ion-label>Caregiver Information</ion-label>\r\n    </ion-list-header>\r\n    <ion-item>\r\n      <ion-label>Type of caregiver</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caregiver_type}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>First name</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caller_first_name}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Last name</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caller_last_name}}</ion-note>\r\n    </ion-item>\r\n    <ion-item href=\"tel:{{theCase?.caller_telephone_number}}\">\r\n      <ion-label>Telephone number</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.caller_telephone_number}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Povide start time of shift</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.employee_date_time_of_shift_start}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Povide end time of shift</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.employee_date_time_of_shift_end}}</ion-note>\r\n    </ion-item>\r\n\r\n\r\n    <ion-list-header color=\"medium\">\r\n      <ion-label>Other information</ion-label>\r\n    </ion-list-header>\r\n    <ion-item>\r\n      <ion-label>Call reason</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.call_reason}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Call language</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.call_language}}</ion-note>\r\n    </ion-item>\r\n    <ion-item>\r\n      <ion-label>Number of calls</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.number_of_calls}}</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\">\r\n      <ion-label>Case Created</ion-label>\r\n    </ion-list-header>\r\n    <ion-item>\r\n      <ion-label>Created case date/time</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.created_at | date: 'short' }}</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\">\r\n      <ion-label>Case Read</ion-label>\r\n    </ion-list-header>\r\n    <ion-item>\r\n      <ion-label>Read case date/time</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.readData.updated_at | date: 'short' }}</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\" *ngIf=\"isForwarded\">\r\n      <ion-label>Forward Details</ion-label>\r\n    </ion-list-header>\r\n    <ion-item *ngIf=\"isForwarded\">\r\n      <ion-label>Message</ion-label>\r\n      <ion-note slot=\"end\">{{messages.forwardMessage }}</ion-note>\r\n    </ion-item>\r\n    <ion-item *ngIf=\"isForwarded\">\r\n      <ion-label>Forwarded to</ion-label>\r\n      <ion-note slot=\"end\">{{ messages.forwardedTo}}</ion-note>\r\n    </ion-item>\r\n    <ion-item *ngIf=\"isForwarded\">\r\n      <ion-label>Forwarded date/time</ion-label>\r\n      <ion-note slot=\"end\">{{messages.forwardDate | date: 'short' }}</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\" *ngIf=\"caseStatus === 'pending' && theCase?.ownership_text !== 'Forwarded'\">\r\n      <ion-label>Accepted Details</ion-label>\r\n    </ion-list-header>\r\n    <ion-item *ngIf=\"caseStatus === 'pending' && theCase?.ownership_text !== 'Forwarded'\">\r\n      <ion-label>Accepted date/time</ion-label>\r\n      <ion-note slot=\"end\">{{theCase?.accepted[0].updated_at | date: 'short' }}</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\" *ngIf=\"isClosed\">\r\n      <ion-label>Closed Details</ion-label>\r\n    </ion-list-header>\r\n    <ion-item *ngIf=\"isClosed\">\r\n      <ion-label>Message</ion-label>\r\n      <ion-note slot=\"end\">{{messages.closeMessage }}</ion-note>\r\n    </ion-item>\r\n    <ion-item *ngIf=\"isClosed\">\r\n      <ion-label>Closed by</ion-label>\r\n      <ion-note slot=\"end\">Paul Lieberman</ion-note>\r\n    </ion-item>\r\n    <ion-item *ngIf=\"isClosed\">\r\n      <ion-label>Closed Date/Time</ion-label>\r\n      <ion-note slot=\"end\">12/12/2018 10:10PM</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\" *ngIf=\"declineNote\">\r\n      <ion-label>Decline Details</ion-label>\r\n    </ion-list-header>\r\n    <ion-item *ngIf=\"declineNote\">\r\n      <ion-label>Message</ion-label>\r\n      <ion-note slot=\"end\">{{declineNote}}</ion-note>\r\n    </ion-item>\r\n    <ion-item *ngIf=\"declineNote\">\r\n      <ion-label>Declined by</ion-label>\r\n      <ion-note slot=\"end\">Paul Lieberman</ion-note>\r\n    </ion-item>\r\n    <ion-item *ngIf=\"declineNote\">\r\n      <ion-label>Decline Date/Time</ion-label>\r\n      <ion-note slot=\"end\">12/12/2018 10:10PM</ion-note>\r\n    </ion-item>\r\n\r\n    <ion-list-header color=\"medium\" *ngIf=\"theCase?.notes.length\">\r\n      <ion-label>\r\n        Case Notes\r\n        <ion-note color=\"primary\">({{theCase?.notes.length}})</ion-note>\r\n\r\n      </ion-label>\r\n    </ion-list-header>\r\n  </ion-list>\r\n\r\n  <ion-card *ngIf=\"theCase?.notes.length\">\r\n    <ion-list>\r\n      <ion-item *ngFor=\"let note of theCase?.notes\">\r\n        <ion-avatar slot=\"start\">\r\n          <img [src]=\"note.user.avatar\">\r\n        </ion-avatar>\r\n        <ion-label text-wrap>\r\n          <h2>{{note.user.fname}} {{note.user.lname}}</h2>\r\n          <p>{{note.note}}</p>\r\n        </ion-label>\r\n        <small slot=\"end\" color=\"light\">\r\n          {{ note.created_at | date: 'shortTime'}} <br>\r\n          {{ note.created_at | date: 'mediumDate'}} <br>\r\n        </small>\r\n      </ion-item>\r\n    </ion-list>\r\n  </ion-card>\r\n</ion-content>"
 
 /***/ }),
 
@@ -90,6 +90,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var src_app_services_case_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/case.service */ "./src/app/services/case.service.ts");
+/* harmony import */ var src_app_services_user_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/user.service */ "./src/app/services/user.service.ts");
+/* harmony import */ var src_app_services_common_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/services/common.service */ "./src/app/services/common.service.ts");
+
+
+
 
 
 
@@ -102,7 +108,10 @@ var Port = /** @class */ (function () {
     return Port;
 }());
 var DetailsPage = /** @class */ (function () {
-    function DetailsPage(route, router, actionSheetController, alertController, toastController) {
+    function DetailsPage(caseService, userService, commonService, route, router, actionSheetController, alertController, toastController) {
+        this.caseService = caseService;
+        this.userService = userService;
+        this.commonService = commonService;
         this.route = route;
         this.router = router;
         this.actionSheetController = actionSheetController;
@@ -131,19 +140,20 @@ var DetailsPage = /** @class */ (function () {
             forwardedTo: '',
             btnText: 'Add Note'
         };
-        this.contacts = [
-            { id: 1, name: 'Andy Ant' },
-            { id: 2, name: 'Pedro Pony' },
-            { id: 3, name: 'Roger Rabbit' },
-            { id: 4, name: 'Rebecca Rabbit' },
-            { id: 5, name: 'Danny Dog' }
-        ];
+        // this.contacts = [
+        //   { id: 1, name: 'Andy Ant' },
+        //   { id: 2, name: 'Pedro Pony' },
+        //   { id: 3, name: 'Roger Rabbit' },
+        //   { id: 4, name: 'Rebecca Rabbit' },
+        //   { id: 5, name: 'Danny Dog' }
+        // ];
     }
     DetailsPage.prototype.ngOnInit = function () {
         console.log(this.route);
         this.isToAssignAction = !!this.route.snapshot.params['toAssign'];
         this.caseStatus = this.route.snapshot.params['caseStatus'];
         this.id = parseInt(this.route.snapshot.params['id'], 10);
+        this.userInfo = this.userService.getUserInfo();
         console.log(this.id, 'this.id');
         this.cases = JSON.parse(localStorage.getItem("cases"));
         this.markAsRead();
@@ -151,62 +161,109 @@ var DetailsPage = /** @class */ (function () {
             this.isClosed = true;
             this.messages.closeMessage = 'My close message is nice..';
         }
+        this.getUsers();
+    };
+    DetailsPage.prototype.getUsers = function () {
+        var _this = this;
+        this.userService.getUsers({})
+            .subscribe(function (users) {
+            _this.contacts = users;
+        });
     };
     DetailsPage.prototype.contactChange = function (event) {
         console.log('contact:', event.value);
+        this.forwardRecepients = event.value;
+        this.formattedRecepients = event.value.map(function (_a) {
+            var id = _a.id;
+            return id;
+        });
         this.action.forwardedTo = Array.prototype.map.call(event.value, function (s) { return s.name; }).toString();
     };
     DetailsPage.prototype.markAsRead = function () {
         var _this = this;
-        this.cases.map(function (item, index) {
-            if (index === _this.id) {
-                item.read = true;
-                console.log(item);
-            }
-            return item;
+        this.commonService.presentLoading();
+        this.caseService.getCase(this.id, this.userInfo.id)
+            .subscribe(function (res) {
+            _this.commonService.stopLoading();
+            _this.theCase = res;
+            _this.isAccepted = res.isAccepted || res.status_text === 'Closed';
+            _this.isCaseActioned = res.isAccepted;
+            // this.isToAssignAction = res.ownership_text !== 'Forwarded';
+            // this.isToAssignAction = !res.isAccepted && res.status_text === 'Pending';
+            _this.caseStatus = res.status_text.toLowerCase();
+            _this.isClosed = res.status_text === 'Closed';
+            console.log('this.theCase :', _this.theCase);
+            // console.log(this.theCase , this.isAccepted, this.caseStatus, 'res');
+        }, function () {
+            _this.commonService.stopLoading();
         });
-        localStorage.setItem("cases", JSON.stringify(this.cases));
+        // this.cases.map((item: any, index: number) => {
+        //   if (index === this.id) {
+        //     item.read = true;
+        //     console.log(item);
+        //   }
+        //   return item;
+        // });
+        // localStorage.setItem("cases", JSON.stringify(this.cases));
     };
     DetailsPage.prototype.setCaseData = function (params) {
-        var _this = this;
-        this.cases.map(function (item, index) {
-            // let cc = item;
-            if (index === _this.id) {
-                item.status = params.status;
-                item.statusColor = params.statusColor;
-                item.callStatus = params.callStatus;
-                item.callStatusColor = params.callStatusColor;
-                item.lastAssignee = params.lastAssignee;
-            }
-            return item;
-        });
-        localStorage.setItem("cases", JSON.stringify(this.cases));
+        console.log(params);
+        // this.cases.map((item: any, index: number) => {
+        //   // let cc = item;
+        //   if (index === this.id) {
+        //     item.status = params.status;
+        //     item.statusColor = params.statusColor;
+        //     item.callStatus = params.callStatus;
+        //     item.callStatusColor = params.callStatusColor;
+        //     item.lastAssignee = params.lastAssignee;
+        //   }
+        //   return item;
+        // });
+        // localStorage.setItem("cases", JSON.stringify(this.cases));
     };
     DetailsPage.prototype.acceptCase = function () {
-        this.presentAcceptConfirm('Are you sure you want to accept caes?');
+        this.presentAcceptConfirm('Are you sure you want to accept case?');
     };
     DetailsPage.prototype.doAction = function () {
+        var _this = this;
         if (this.action.type === 'note') {
-            this.messages.notes.push({ message: this.action.note, date: new Date() });
-            this.presentToastWithOptions("Note added successfully.");
-            this.action.note = '';
-            this.action.show = false;
+            this.caseService.addNote({ note: this.action.note, created_by: this.userInfo.id, id: this.id })
+                .subscribe(function () {
+                _this.markAsRead();
+                // this.messages.notes.push({message: this.action.note, date: new Date()});
+                _this.presentToastWithOptions("Note added successfully.");
+                _this.action.note = '';
+                _this.action.show = false;
+            });
         }
         else if (this.action.type === 'forward') {
-            this.messages.forwardMessage = this.action.note;
-            this.messages.forwardedTo = this.action.forwardedTo;
-            this.messages.forwardDate = new Date();
-            this.isForwarded = true;
-            this.presentToastWithOptions("Case forwarded successfully.");
-            this.action.note = '';
-            this.action.show = false;
-            this.setCaseData({
-                status: 'Pending',
-                statusColor: 'danger',
-                callStatus: 'Forwarded',
-                from: 'Paul Lieberman',
-                callStatusColor: 'warning',
-                lastAssignee: this.action.forwardedTo
+            this.commonService.presentLoading();
+            this.caseService.forwardCase({
+                case_id: this.id,
+                user_id: this.userInfo.id,
+                note: this.action.note,
+                recipient: this.formattedRecepients
+            })
+                .subscribe(function (res) {
+                _this.commonService.loadingBox.dismiss();
+                _this.messages.forwardMessage = _this.action.note;
+                _this.messages.forwardedTo = _this.action.forwardedTo;
+                _this.messages.forwardDate = new Date();
+                _this.isForwarded = true;
+                _this.presentToastWithOptions("Case forwarded successfully.");
+                _this.action.note = '';
+                _this.action.show = false;
+                _this.markAsRead();
+                _this.setCaseData({
+                    status: 'Pending',
+                    statusColor: 'danger',
+                    callStatus: 'Forwarded',
+                    from: _this.userInfo.full_name,
+                    callStatusColor: 'warning',
+                    lastAssignee: _this.action.forwardedTo
+                });
+            }, function () {
+                _this.commonService.loadingBox.dismiss();
             });
         }
         else if (this.action.type === 'close') {
@@ -249,23 +306,34 @@ var DetailsPage = /** @class */ (function () {
                                 }, {
                                     text: isAssign ? 'Assign' : 'Decline',
                                     handler: function () {
-                                        console.log('Confirm Okay');
-                                        _this.presentToastWithOptions("Action saved successfully.");
-                                        if (isAssign) {
-                                            _this.isAccepted = true;
-                                            _this.setCaseData({
-                                                status: 'Pending',
-                                                statusColor: 'danger',
-                                                callStatus: 'Accepted',
-                                                callStatusColor: 'primary',
-                                                lastAssignee: 'Paul Lieberman'
-                                            });
-                                        }
-                                        _this.isAssign = isAssign;
-                                        _this.isCaseActioned = true;
-                                        _this.declineNote = _this.action.note;
-                                        _this.action.show = false;
-                                        _this.action.note = '';
+                                        _this.commonService.presentLoading();
+                                        _this.caseService.acceptCase(_this.id, _this.userInfo.id)
+                                            .subscribe(function () {
+                                            // this.presentToastWithOptions(`Case accepted successfully.`);
+                                            // this.markAsRead();
+                                            // this.isAccepted = true;
+                                            _this.commonService.loadingBox.dismiss();
+                                            _this.router.navigate(["/tabs/tab1/case/details/" + _this.id + "/pending"]);
+                                            _this.presentToastWithOptions("Action saved successfully.");
+                                            console.log('Confirm Okay');
+                                            // if (isAssign) {
+                                            //   this.isAccepted = true;
+                                            //   this.setCaseData({
+                                            //     status: 'Pending',
+                                            //     statusColor: 'danger',
+                                            //     callStatus: 'Accepted',
+                                            //     callStatusColor: 'primary',
+                                            //     lastAssignee: 'Paul Lieberman'
+                                            //   });
+                                            // }
+                                            // this.isAssign = isAssign;
+                                            // this.isCaseActioned = true;
+                                            // this.declineNote = this.action.note;
+                                            // this.action.show = false;
+                                            // this.action.note = '';
+                                        }, function () {
+                                            _this.commonService.loadingBox.dismiss();
+                                        });
                                     }
                                 }
                             ]
@@ -301,14 +369,53 @@ var DetailsPage = /** @class */ (function () {
                                     text: 'Accept',
                                     handler: function () {
                                         console.log('Confirm Okay');
-                                        _this.presentToastWithOptions("Case accepted successfully.");
-                                        _this.isAccepted = true;
-                                        _this.setCaseData({
-                                            status: 'Pending',
-                                            statusColor: 'danger',
-                                            callStatus: 'Accepted',
-                                            callStatusColor: 'primary',
-                                            lastAssignee: 'Paul Lieberman'
+                                        _this.caseService.acceptCase(_this.id, _this.userInfo.id)
+                                            .subscribe(function () {
+                                            _this.presentToastWithOptions("Case accepted successfully.");
+                                            _this.markAsRead();
+                                            _this.isAccepted = true;
+                                        });
+                                    }
+                                }
+                            ]
+                        })];
+                    case 1:
+                        alert = _a.sent();
+                        return [4 /*yield*/, alert.present()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    DetailsPage.prototype.presentReOpen = function (message) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var alert;
+            var _this = this;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.alertController.create({
+                            header: 'Confirm!',
+                            message: message,
+                            buttons: [
+                                {
+                                    text: 'Cancel',
+                                    role: 'cancel',
+                                    cssClass: 'success',
+                                    handler: function (blah) {
+                                        console.log('Confirm Cancel: blah');
+                                    }
+                                }, {
+                                    text: 'Re-Open',
+                                    handler: function () {
+                                        console.log('Confirm Okay');
+                                        _this.caseService.caseReopen({ case_id: _this.id, user_id: _this.userInfo.id, note: 'Reopen case note', case_form: 'close' })
+                                            .subscribe(function () {
+                                            _this.presentToastWithOptions("Case reopen successfully.");
+                                            // this.router.navigate([`/tabs/tab1/case/details/${this.id}/pending`]);
+                                            // this.markAsRead();
+                                            // this.isAccepted = true;
                                         });
                                     }
                                 }
@@ -346,44 +453,57 @@ var DetailsPage = /** @class */ (function () {
     };
     DetailsPage.prototype.presentActionSheet = function () {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
-            var actionSheet;
+            var buttons, actionSheet;
             var _this = this;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.actionSheetController.create({
-                            header: 'Action',
-                            buttons: [{
-                                    text: 'Forward',
-                                    handler: function () {
-                                        // this.presentForwardPrompt();
-                                        _this.action.show = true;
-                                        _this.action.type = 'forward';
-                                        _this.action.btnText = 'Forward';
-                                    }
-                                }, {
-                                    text: 'Add Note',
-                                    handler: function () {
-                                        // this.presentAddNotePrompt();
-                                        _this.action.show = true;
-                                        _this.action.type = 'note';
-                                        _this.action.btnText = 'Add Note';
-                                    }
-                                }, {
-                                    text: 'Close Case',
-                                    handler: function () {
-                                        // this.presentCloseCasePrompt();
-                                        _this.action.show = true;
-                                        _this.action.type = 'close';
-                                        _this.action.btnText = 'Close Case';
-                                    }
-                                }, {
-                                    text: 'Cancel',
-                                    role: 'cancel',
-                                    handler: function () {
-                                        console.log('Cancel clicked');
-                                    }
-                                }]
-                        })];
+                    case 0:
+                        buttons = this.isClosed ? [{
+                                text: 'Re-Open',
+                                handler: function () {
+                                    _this.presentReOpen('Are you sure you want to reopen case?');
+                                }
+                            }, {
+                                text: 'Cancel',
+                                role: 'cancel',
+                                handler: function () {
+                                    console.log('Cancel clicked');
+                                }
+                            }] : [{
+                                text: 'Forward',
+                                handler: function () {
+                                    // this.presentForwardPrompt();
+                                    _this.action.show = true;
+                                    _this.action.type = 'forward';
+                                    _this.action.btnText = 'Forward';
+                                }
+                            }, {
+                                text: 'Add Note',
+                                handler: function () {
+                                    // this.presentAddNotePrompt();
+                                    _this.action.show = true;
+                                    _this.action.type = 'note';
+                                    _this.action.btnText = 'Add Note';
+                                }
+                            }, {
+                                text: 'Close Case',
+                                handler: function () {
+                                    // this.presentCloseCasePrompt();
+                                    _this.action.show = true;
+                                    _this.action.type = 'close';
+                                    _this.action.btnText = 'Close Case';
+                                }
+                            }, {
+                                text: 'Cancel',
+                                role: 'cancel',
+                                handler: function () {
+                                    console.log('Cancel clicked');
+                                }
+                            }];
+                        return [4 /*yield*/, this.actionSheetController.create({
+                                header: 'Action',
+                                buttons: buttons
+                            })];
                     case 1:
                         actionSheet = _a.sent();
                         return [4 /*yield*/, actionSheet.present()];
@@ -458,19 +578,23 @@ var DetailsPage = /** @class */ (function () {
                                     text: 'Confirm',
                                     handler: function () {
                                         console.log('Confirm Okay');
-                                        _this.messages.closeMessage = message;
-                                        _this.messages.closeDate = new Date();
-                                        _this.isClosed = true;
-                                        _this.caseStatus = 'closed';
-                                        _this.action.show = false;
-                                        _this.presentToastWithOptions("Case closed successfully.");
-                                        _this.setCaseData({
-                                            status: 'Closed',
-                                            statusColor: 'success',
-                                            callStatus: 'Closed',
-                                            callStatusColor: 'success',
-                                            lastAssignee: 'Paul Lieberman'
+                                        _this.caseService.closeCase({ case_id: _this.id, user_id: _this.userInfo.id, note: message })
+                                            .subscribe(function () {
+                                            _this.presentToastWithOptions("Case closed successfully.");
+                                            _this.markAsRead();
+                                            _this.messages.closeMessage = message;
+                                            _this.messages.closeDate = new Date();
+                                            _this.isClosed = true;
+                                            _this.caseStatus = 'closed';
+                                            _this.action.show = false;
                                         });
+                                        // this.setCaseData({
+                                        //   status: 'Closed',
+                                        //   statusColor: 'success',
+                                        //   callStatus: 'Closed',
+                                        //   callStatusColor: 'success',
+                                        //   lastAssignee: 'Paul Lieberman'
+                                        // });
                                     }
                                 }
                             ]
@@ -491,7 +615,10 @@ var DetailsPage = /** @class */ (function () {
             template: __webpack_require__(/*! ./details.page.html */ "./src/app/cases/details/details.page.html"),
             styles: [__webpack_require__(/*! ./details.page.scss */ "./src/app/cases/details/details.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [src_app_services_case_service__WEBPACK_IMPORTED_MODULE_4__["CaseService"],
+            src_app_services_user_service__WEBPACK_IMPORTED_MODULE_5__["UserService"],
+            src_app_services_common_service__WEBPACK_IMPORTED_MODULE_6__["CommonService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
             _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["ActionSheetController"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"],

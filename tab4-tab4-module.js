@@ -58,7 +58,7 @@ var Tab4PageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      <img alt=\"logo\" height=\"40\" src=\"assets/logo.png\">\n    </ion-title>\n    <ion-buttons slot=\"end\">\n      <ion-menu-button></ion-menu-button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>\n      <ion-label>Settings</ion-label>\n    </ion-list-header>\n    <ion-item routerLink=\"/tabs/tab4/settings/security\">\n      <ion-icon name=\"key\" slot=\"start\"></ion-icon>\n      <ion-label>Security and Login</ion-label>\n    </ion-item>\n    <ion-item routerLink=\"/tabs/tab4/settings/profile\">\n      <ion-icon name=\"person\" slot=\"start\"></ion-icon>\n      <ion-label>Profile Information</ion-label>\n    </ion-item>\n    <ion-item routerLink=\"/tabs/tab4/settings/notification\">\n      <ion-icon name=\"notifications\" slot=\"start\"></ion-icon>\n      <ion-label>Notification Settings</ion-label>\n    </ion-item>\n    <ion-item routerLink=\"/login\">\n      <ion-icon name=\"log-out\" slot=\"start\"></ion-icon>\n      <ion-label>Logout</ion-label>\n    </ion-item>\n  </ion-list>\n\n</ion-content>"
+module.exports = "<ion-header>\r\n  <ion-toolbar>\r\n    <ion-title>\r\n      <img alt=\"logo\" height=\"40\" src=\"assets/logo.png\">\r\n    </ion-title>\r\n    <ion-buttons slot=\"end\">\r\n      <ion-menu-button></ion-menu-button>\r\n    </ion-buttons>\r\n  </ion-toolbar>\r\n</ion-header>\r\n\r\n<ion-content>\r\n  <ion-list>\r\n    <ion-list-header>\r\n      <ion-label>Settings</ion-label>\r\n    </ion-list-header>\r\n    <ion-item routerLink=\"/tabs/tab4/settings/security\">\r\n      <ion-icon name=\"key\" slot=\"start\"></ion-icon>\r\n      <ion-label>Security and Login</ion-label>\r\n    </ion-item>\r\n    <ion-item routerLink=\"/tabs/tab4/settings/profile\">\r\n      <ion-icon name=\"person\" slot=\"start\"></ion-icon>\r\n      <ion-label>Profile Information</ion-label>\r\n    </ion-item>\r\n    <ion-item routerLink=\"/tabs/tab4/settings/notification\">\r\n      <ion-icon name=\"notifications\" slot=\"start\"></ion-icon>\r\n      <ion-label>Notification Settings</ion-label>\r\n    </ion-item>\r\n    <ion-item (click)=\"logout()\">\r\n      <ion-icon name=\"log-out\" slot=\"start\"></ion-icon>\r\n      <ion-label>Logout</ion-label>\r\n    </ion-item>\r\n  </ion-list>\r\n\r\n</ion-content>"
 
 /***/ }),
 
@@ -85,12 +85,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Tab4Page", function() { return Tab4Page; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/user.service */ "./src/app/services/user.service.ts");
+/* harmony import */ var _services_common_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/common.service */ "./src/app/services/common.service.ts");
+
+
+
 
 
 var Tab4Page = /** @class */ (function () {
-    function Tab4Page() {
+    function Tab4Page(commonService, userService, route, router) {
+        this.commonService = commonService;
+        this.userService = userService;
+        this.route = route;
+        this.router = router;
     }
-    Tab4Page.prototype.ngOnInit = function () {
+    Tab4Page.prototype.ngOnInit = function () { };
+    Tab4Page.prototype.logout = function () {
+        this.commonService.logoutAlert();
     };
     Tab4Page = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -98,7 +110,10 @@ var Tab4Page = /** @class */ (function () {
             template: __webpack_require__(/*! ./tab4.page.html */ "./src/app/tab4/tab4.page.html"),
             styles: [__webpack_require__(/*! ./tab4.page.scss */ "./src/app/tab4/tab4.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_common_service__WEBPACK_IMPORTED_MODULE_4__["CommonService"],
+            _services_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"]])
     ], Tab4Page);
     return Tab4Page;
 }());

@@ -52,7 +52,7 @@ var TabsPageModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-tabs>\n\n  <ion-tab-bar slot=\"bottom\" color=\"primary\" mode=\"md\">\n    <ion-tab-button tab=\"tab0\">\n      <ion-icon name=\"home\"></ion-icon>\n      <ion-label>Dashboard</ion-label>\n    </ion-tab-button>\n    <ion-tab-button tab=\"tab1\">\n      <ion-icon name=\"briefcase\"></ion-icon>\n      <ion-label>Cases</ion-label>\n      <ion-badge color=\"danger\">6</ion-badge>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"tab2\">\n      <ion-icon name=\"chatbubbles\"></ion-icon>\n      <ion-label>Messages</ion-label>\n      <ion-badge color=\"danger\">3</ion-badge>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"tab3\">\n      <ion-icon name=\"person\"></ion-icon>\n      <ion-label>Contacts</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"tab4\">\n      <ion-icon name=\"settings\"></ion-icon>\n      <ion-label>Settings</ion-label>\n    </ion-tab-button>\n  </ion-tab-bar>\n\n</ion-tabs>\n"
+module.exports = "<ion-tabs>\r\n  <ion-tab-bar slot=\"bottom\" color=\"primary\" mode=\"md\">\r\n    <ion-tab-button tab=\"tab0\">\r\n      <ion-icon name=\"home\"></ion-icon>\r\n      <ion-label>Dashboard</ion-label>\r\n    </ion-tab-button>\r\n    <ion-tab-button tab=\"tab1\">\r\n      <ion-icon name=\"briefcase\"></ion-icon>\r\n      <ion-label>Cases</ion-label>\r\n      <ion-badge *ngIf=\"caseCount.totalActiveCounter\" color=\"danger\">{{caseCount?.totalActiveCounter}}</ion-badge>\r\n    </ion-tab-button>\r\n\r\n    <ion-tab-button tab=\"tab2\">\r\n      <ion-icon name=\"chatbubbles\"></ion-icon>\r\n      <ion-label>Messages</ion-label>\r\n      <ion-badge *ngIf=\"caseCount.totalUnread\" color=\"danger\">{{caseCount?.totalUnread}}</ion-badge>\r\n    </ion-tab-button>\r\n\r\n    <ion-tab-button tab=\"tab3\">\r\n      <ion-icon name=\"person\"></ion-icon>\r\n      <ion-label>Contacts</ion-label>\r\n    </ion-tab-button>\r\n\r\n    <ion-tab-button tab=\"tab4\">\r\n      <ion-icon name=\"settings\"></ion-icon>\r\n      <ion-label>Settings</ion-label>\r\n    </ion-tab-button>\r\n  </ion-tab-bar>\r\n\r\n</ion-tabs>\r\n"
 
 /***/ }),
 
@@ -79,17 +79,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TabsPage", function() { return TabsPage; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_case_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/case.service */ "./src/app/services/case.service.ts");
+/* harmony import */ var _services_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/user.service */ "./src/app/services/user.service.ts");
+/* harmony import */ var _services_message_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/message.service */ "./src/app/services/message.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _services_data_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../services/data.service */ "./src/app/services/data.service.ts");
+/* harmony import */ var _services_common_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../services/common.service */ "./src/app/services/common.service.ts");
+
+
+
+
+
+
 
 
 var TabsPage = /** @class */ (function () {
-    function TabsPage() {
+    function TabsPage(commonService, dataService, route, router, caseService, userService, messageService) {
+        this.commonService = commonService;
+        this.dataService = dataService;
+        this.route = route;
+        this.router = router;
+        this.caseService = caseService;
+        this.userService = userService;
+        this.messageService = messageService;
+        this.caseCount = {
+            totalActiveCounter: 0
+        };
+        this.messageCount = {
+            totalUnread: 0
+        };
     }
+    TabsPage.prototype.ngOnInit = function () {
+        var _this = this;
+        this.dataService.currentMessage.subscribe(function (message) { return _this.message = message; });
+        this.userInfo = this.userService.getUserInfo();
+        console.log('this.router :', this.router);
+        if (this.userInfo && this.userInfo.id && this.router.url.includes('/tabs')) {
+            this.getCaseCount();
+            // this.getUnreadCount();
+            var terval_1 = setInterval(function () {
+                if (_this.userInfo && _this.userInfo.id && _this.router.url.includes('/tabs')) {
+                    // this.getUnreadCount();
+                    _this.getCaseCount();
+                }
+                else {
+                    clearInterval(terval_1);
+                }
+            }, this.commonService.intervalTime);
+        }
+    };
+    TabsPage.prototype.getCaseCount = function () {
+        var _this = this;
+        this.caseService.getCaseCount(this.userInfo.id)
+            .subscribe(function (res) {
+            _this.caseCount = res;
+        });
+    };
     TabsPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-tabs',
             template: __webpack_require__(/*! ./tabs.page.html */ "./src/app/tabs/tabs.page.html"),
             styles: [__webpack_require__(/*! ./tabs.page.scss */ "./src/app/tabs/tabs.page.scss")]
-        })
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_common_service__WEBPACK_IMPORTED_MODULE_7__["CommonService"],
+            _services_data_service__WEBPACK_IMPORTED_MODULE_6__["DataService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"],
+            src_app_services_case_service__WEBPACK_IMPORTED_MODULE_2__["CaseService"],
+            _services_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"],
+            _services_message_service__WEBPACK_IMPORTED_MODULE_4__["MessageService"]])
     ], TabsPage);
     return TabsPage;
 }());
@@ -134,6 +192,14 @@ var routes = [{
                                 loadChildren: '../dashboard/support/support.module#SupportPageModule'
                             },
                             {
+                                path: 'support/:id/:name',
+                                loadChildren: '../dashboard/support-form/support-form.module#SupportFormPageModule'
+                            },
+                            {
+                                path: 'notifications',
+                                loadChildren: '../dashboard/notifications/notifications.module#NotificationsPageModule'
+                            },
+                            {
                                 path: 'faq',
                                 loadChildren: '../dashboard/faq/faq.module#FaqPageModule'
                             },
@@ -152,15 +218,15 @@ var routes = [{
                         children: [
                             {
                                 path: 'silent',
-                                loadChildren: '../cases/all/all.module#AllPageModule'
+                                loadChildren: '../tab1/tab1.module#Tab1PageModule'
                             },
                             {
                                 path: 'closed',
-                                loadChildren: '../cases/closed/closed.module#ClosedPageModule'
+                                loadChildren: '../tab1/tab1.module#Tab1PageModule'
                             },
                             {
                                 path: 'pending',
-                                loadChildren: '../cases/pending/pending.module#PendingPageModule'
+                                loadChildren: '../tab1/tab1.module#Tab1PageModule'
                             },
                             {
                                 path: 'details/:id',
@@ -174,7 +240,7 @@ var routes = [{
                                 path: 'details/:id/:caseStatus/:toAssign',
                                 loadChildren: '../cases/details/details.module#DetailsPageModule'
                             },
-                            { path: 'active', loadChildren: '../cases/active/active.module#ActivePageModule' },
+                            { path: 'active', loadChildren: '../tab1/tab1.module#Tab1PageModule' },
                             { path: 'remarks', loadChildren: '../cases/modal/remarks/remarks.module#RemarksPageModule' },
                         ]
                     }
@@ -190,6 +256,7 @@ var routes = [{
                         path: 'messages',
                         children: [
                             { path: 'conversation', loadChildren: '../messages/conversation/conversation.module#ConversationPageModule' },
+                            { path: 'conversation/:id', loadChildren: '../messages/conversation/conversation.module#ConversationPageModule' },
                             { path: 'recent', loadChildren: '../messages/recent/recent.module#RecentPageModule' },
                         ]
                     }
@@ -232,9 +299,9 @@ var routes = [{
     },
     {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/tabs/tab4/settings/notification',
         pathMatch: 'full'
-    }
+    },
 ];
 var TabsPageRoutingModule = /** @class */ (function () {
     function TabsPageRoutingModule() {
